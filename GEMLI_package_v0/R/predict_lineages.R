@@ -15,7 +15,8 @@ predict_lineages <- function(GEMLI_items, repetitions=100, sample_size=(2/3), de
     cell_clusters_unique_name = cell_clusters
     
     for (colname in 1:ncol(cell_clusters)) {
-      cell_clusters_unique_name[!is.na(cell_clusters_unique_name[,colname]),colname] = paste0(colname,'_',cell_clusters_unique_name[!is.na(cell_clusters_unique_name[,colname]),colname])
+      rs = !is.na(cell_clusters_unique_name[,colname])
+      cell_clusters_unique_name[rs, colname] = paste0(colname, '_', cell_clusters_unique_name[rs, colname])
     }
     
     clustersize_dict = table(cell_clusters_unique_name)
