@@ -24,9 +24,10 @@ quantify_clusters_iterative = function(data_matrix, marker_genes, N=2, fast=FALS
         corr_expr_subset = corr_expr[cells_in_cluster,cells_in_cluster]
         clustering = cutree(hclust(as.dist(corr_expr_subset), method = "ward.D2", ), k=N)
         cell_clusters[names(clustering),i] = as.vector(clustering) + max(c(0, cell_clusters[,i]), na.rm=T)
-      }
-      else {cell_clusters[cells_in_cluster,i] = 0}
+      } else {
+        cell_clusters[cells_in_cluster,i] = 0}
     }
+    
     if (sum(cell_clusters[,i], na.rm=T)==0) {
       iterate = F
     }
