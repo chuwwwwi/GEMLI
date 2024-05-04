@@ -7,7 +7,7 @@ predict_lineages <- function(GEMLI_items, repetitions=100, sample_size=(2/3), de
   rownames(results) = colnames(data_matrix)
   colnames(results) = colnames(data_matrix)
   
-  for (i in seq(1,repetitions))
+  for (i in seq(1, repetitions))
   {
     marker_genes_sample = sample(intersect(marker_genes, rownames(data_matrix)), 
                                  round(length(intersect(marker_genes, rownames(data_matrix)))*sample_size,0))
@@ -21,8 +21,15 @@ predict_lineages <- function(GEMLI_items, repetitions=100, sample_size=(2/3), de
     
     clustersize_dict = table(cell_clusters_unique_name)
     smallest_clusters = names(clustersize_dict)[clustersize_dict %in% desired_cluster_size]
-    best_prediction = data.matrix(matrix(F, nrow=ncol(data_matrix), ncol=ncol(data_matrix))); rownames(best_prediction) = colnames(data_matrix); colnames(best_prediction) = colnames(data_matrix)
-    for (cluster in smallest_clusters){cells_in_cluster = rownames(best_prediction)[rowSums(cell_clusters_unique_name==cluster, na.rm=T)>0]; best_prediction[cells_in_cluster,cells_in_cluster] <- T}
+    
+    best_prediction = data.matrix(matrix(F, nrow=ncol(data_matrix), ncol=ncol(data_matrix)))
+    rownames(best_prediction) = colnames(data_matrix)
+    colnames(best_prediction) = colnames(data_matrix)
+    
+    for (cluster in smallest_clusters) {
+      cells_in_cluster = rownames(best_prediction)[rowSums(cell_clusters_unique_name==cluster, na.rm=T)>0]
+      best_prediction[cells_in_cluster,cells_in_cluster] <- T
+    }
     diag(best_prediction) = F
     results = results + best_prediction
   }
