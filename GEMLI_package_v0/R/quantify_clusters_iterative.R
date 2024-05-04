@@ -17,8 +17,11 @@ quantify_clusters_iterative = function(data_matrix, marker_genes, N=2, fast=FALS
   while (iterate)
   {
     cell_clusters = cbind(cell_clusters, rep(0,nrow(cell_clusters)))
+    
     for (cluster in setdiff(unique(cell_clusters[,(i-1)]),0)) {
+      
       cells_in_cluster = rownames(cell_clusters)[cell_clusters[,(i-1)]==cluster]
+      
       if (length(cells_in_cluster) >= 4) { # this line ends the sub clustering # min of desired cluster size
         correlation = mean((corr_expr_raw[cells_in_cluster,cells_in_cluster])[lower.tri(corr_expr_raw[cells_in_cluster,cells_in_cluster], diag=F)])
         corr_expr_subset = corr_expr[cells_in_cluster,cells_in_cluster]
